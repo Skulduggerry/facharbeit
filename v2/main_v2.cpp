@@ -4,17 +4,18 @@
 
 int main() {
     std::vector<sort::AlgorithmInformation> algorithm_information{
-            {sort::quicksort<sort::Sortable::iterator>,                  "quicksort",
+            {sort::quicksort<sort::Sortable::iterator>,           "quicksort",
                     {
-                            {sort::BEST_CASE,  sort::quicksort_best_case_generator},
+                            {sort::BEST_CASE, sort::quicksort_best_case_generator},
                             {sort::WORST_CASE, sort::quicksort_worst_case_generator}
                     }
             },
-            {sort::quicksort_random_partition<sort::Sortable::iterator>, "quicksort_random_partition",
+            {sort::quicksort_iterative<sort::Sortable::iterator>, "quicksort_iterative",
                     {
+                            {sort::BEST_CASE, sort::quicksort_best_case_generator},
                             {sort::WORST_CASE, sort::quicksort_worst_case_generator}
                     }
-            }
+            },
     };
 
     sort::benchmark(algorithm_information);
