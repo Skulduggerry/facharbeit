@@ -85,7 +85,7 @@ namespace sort {
         }
     }
 
-    inline void output(const std::vector<AlgorithmInformation> & algorithm_information) {
+    inline void output(const std::vector<AlgorithmInformation> &algorithm_information) {
         for (auto &information: algorithm_information) {
             std::cout << information.algorithmName_ << ":\n";
             for (auto &[log_n, perCaseResults]: information.sizeCaseResults_) {

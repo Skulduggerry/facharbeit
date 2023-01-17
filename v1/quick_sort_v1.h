@@ -3,8 +3,6 @@
 
 #include "../definitions.h"
 #include <numeric>
-#include <cmath>
-#include <iostream>
 
 namespace sort {
     namespace partition {
