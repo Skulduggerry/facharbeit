@@ -69,6 +69,33 @@ namespace sort {
         for (const auto &[log_n, required_time]: case_results)
             size_case_results[log_n].emplace(case_, required_time);
     }
+
+    inline void benchmark(std::vector<AlgorithmInformation> &algorithm_information) {
+        using namespace sort;
+
+        for (auto &[algorithm, name, special_cases, per_case_size_results]: algorithm_information) {
+            for (auto &[case_, generator]: special_cases) {
+                ExecutionResults special_case_result = evaluate(generator, algorithm, name);
+
+                add_results(per_case_size_results, special_case_result, case_);
+            }
+
+            ExecutionResults average_case_results = evaluate_average_case(algorithm, name);
+            add_results(per_case_size_results, average_case_results, AVERAGE_CASE);
+        }
+    }
+
+    inline void output(const std::vector<AlgorithmInformation> & algorithm_information) {
+        for (auto &information: algorithm_information) {
+            std::cout << information.algorithmName_ << ":\n";
+            for (auto &[log_n, perCaseResults]: information.sizeCaseResults_) {
+                std::cout << "  log_n: " << log_n << '\n';
+                for (auto &[case_, required_time]: perCaseResults) {
+                    std::cout << "    " << to_string(case_) << ": " << required_time.count() << "ns\n";
+                }
+            }
+        }
+    }
 }
 
 

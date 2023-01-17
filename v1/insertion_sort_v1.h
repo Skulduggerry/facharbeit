@@ -1,7 +1,7 @@
-#ifndef CODE_INSERTION_SORT_H
-#define CODE_INSERTION_SORT_H
+#ifndef CODE_INSERTION_SORT_V1_H
+#define CODE_INSERTION_SORT_V1_H
 
-#include "definitions.h"
+#include "../definitions.h"
 #include <numeric>
 
 namespace sort {
@@ -32,4 +32,4 @@ namespace sort {
     };
 }
 
-#endif //CODE_INSERTION_SORT_H
+#endif //CODE_INSERTION_SORT_V1_H

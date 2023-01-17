@@ -1,7 +1,7 @@
-#ifndef CODE_BUBBLE_SORT_H
-#define CODE_BUBBLE_SORT_H
+#ifndef CODE_BUBBLE_SORT_V1_H
+#define CODE_BUBBLE_SORT_V1_H
 
-#include "definitions.h"
+#include "../definitions.h"
 #include <numeric>
 
 namespace sort {
@@ -40,4 +40,4 @@ namespace sort {
     };
 }
 
-#endif //CODE_BUBBLE_SORT_H
+#endif //CODE_BUBBLE_SORT_V1_H
