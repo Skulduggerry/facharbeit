@@ -73,6 +73,9 @@ namespace sort {
     inline void benchmark(std::vector<AlgorithmInformation> &algorithm_information) {
         using namespace sort;
 
+        if(algorithm_information.empty()) return;
+        evaluate_average_case(algorithm_information.at(0).algorithm_, "---", 15);
+
         for (auto &[algorithm, name, special_cases, per_case_size_results]: algorithm_information) {
             for (auto &[case_, generator]: special_cases) {
                 ExecutionResults special_case_result = evaluate(generator, algorithm, name);
