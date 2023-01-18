@@ -9,7 +9,7 @@ namespace sort {
     namespace partition {
         template<std::random_access_iterator It>
         inline It random_partition(It begin, It end) {
-            auto random_pos = rand() % (std::distance(begin, end) + 1);
+            auto random_pos = rand() % std::distance(begin, end);
             std::iter_swap(std::next(begin, random_pos), std::prev(end));
             return default_partition(begin, end);
         }
