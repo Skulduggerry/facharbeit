@@ -22,15 +22,13 @@ namespace sort {
     using Sortable = std::vector<value>;
     using Algorithm = std::function<void(Sortable::iterator, Sortable::iterator)>;
     using ExecutionResults = std::map<size_t, std::chrono::nanoseconds>;
-    using CaseResults = std::map<Case, std::chrono::nanoseconds>;
-    using SizeCaseResults = std::map<size_t, CaseResults>;
     using SortableGenerator = std::function<Sortable(size_t)>;
 
     struct AlgorithmInformation {
         Algorithm algorithm_;
         std::string algorithmName_;
         std::map<Case, SortableGenerator> supportedSpecialCases;
-        SizeCaseResults sizeCaseResults_;
+        std::map<Case, ExecutionResults> perCaseResults;
 
         AlgorithmInformation(Algorithm algorithm,
                              std::string algorithmName,
@@ -38,7 +36,7 @@ namespace sort {
                 algorithm_(std::move(algorithm)),
                 algorithmName_(std::move(algorithmName)),
                 supportedSpecialCases(supportedSpacialCases),
-                sizeCaseResults_{} {}
+                perCaseResults{} {}
     };
 }
 

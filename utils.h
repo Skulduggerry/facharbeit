@@ -5,6 +5,9 @@
 #include <random>
 #include <chrono>
 #include <iostream>
+#include <fstream>
+#include <set>
+#include <iomanip>
 
 namespace sort {
     inline Sortable generate_average_case(const size_t n) {
@@ -54,47 +57,90 @@ namespace sort {
     inline std::string to_string(const Case &case_) {
         switch (case_) {
             case BEST_CASE:
-                return "BEST_CASE   ";
+                return "BEST_CASE";
             case AVERAGE_CASE:
                 return "AVERAGE_CASE";
             default:
-                return "WORST_CASE  ";
+                return "WORST_CASE";
         }
-    }
-
-    inline void
-    add_results(SizeCaseResults &size_case_results,
-                const ExecutionResults &case_results,
-                const Case &case_) {
-        for (const auto &[log_n, required_time]: case_results)
-            size_case_results[log_n].emplace(case_, required_time);
     }
 
     inline void benchmark(std::vector<AlgorithmInformation> &algorithm_information) {
         using namespace sort;
 
-        if(algorithm_information.empty()) return;
+        if (algorithm_information.empty()) return;
         evaluate_average_case(algorithm_information.at(0).algorithm_, "---", 15);
 
-        for (auto &[algorithm, name, special_cases, per_case_size_results]: algorithm_information) {
+        for (auto &[algorithm, name, special_cases, per_case_results]: algorithm_information) {
             for (auto &[case_, generator]: special_cases) {
                 ExecutionResults special_case_result = evaluate(generator, algorithm, name);
 
-                add_results(per_case_size_results, special_case_result, case_);
+                per_case_results[case_] = special_case_result;
             }
 
             ExecutionResults average_case_results = evaluate_average_case(algorithm, name);
-            add_results(per_case_size_results, average_case_results, AVERAGE_CASE);
+            per_case_results[AVERAGE_CASE] = average_case_results;
         }
     }
 
-    inline void output(const std::vector<AlgorithmInformation> &algorithm_information) {
-        for (auto &information: algorithm_information) {
-            std::cout << information.algorithmName_ << ":\n";
-            for (auto &[log_n, perCaseResults]: information.sizeCaseResults_) {
-                std::cout << "  log_n: " << log_n << '\n';
-                for (auto &[case_, required_time]: perCaseResults) {
-                    std::cout << "    " << to_string(case_) << ": " << required_time.count() << "ns\n";
+    inline void output(const std::vector<AlgorithmInformation> &algorithm_information, bool to_file = false) {
+        if (to_file) {
+            if (algorithm_information.empty()) return;
+
+            std::ofstream average_case_result_file{"average_case_results.csv", std::ios::trunc};
+            if (average_case_result_file.fail()) {
+                std::cerr << "Failed to open or create average_case_results.csv";
+                std::abort();
+            }
+
+            std::set<size_t> logs{};
+            for (auto &information: algorithm_information) {
+                for (auto &[case_, results]: information.perCaseResults) {
+                    for (auto &[log_n, time]: results) {
+                        logs.emplace(log_n);
+                    }
+                }
+            }
+
+            average_case_result_file << ";";
+            for (auto &log_n: logs) {
+                average_case_result_file << log_n << ";";
+            }
+            average_case_result_file << std::endl;
+
+            for (auto &[algo, name, supported, per_case_results]: algorithm_information) {
+                std::ofstream algorithm_result_file{name + "_results.csv", std::ios::trunc};
+                if (algorithm_result_file.fail()) {
+                    std::cerr << "Failed to open or create " << name << "_results.csv";
+                    std::abort();
+                }
+
+                algorithm_result_file << ";";
+                for (auto &log_n: logs) {
+                    algorithm_result_file << log_n << ";";
+                }
+                algorithm_result_file << std::endl;
+
+                for (auto &[case_, results]: per_case_results) {
+                    algorithm_result_file << to_string(case_) << ";";
+                    if (AVERAGE_CASE == case_) average_case_result_file << name << ";";
+                    for (auto &[log_n, required_time]: results) {
+                        std::string output = logs.contains(log_n) ? std::to_string(required_time.count()) + ";" : ";";
+                        algorithm_result_file << output;
+                        if (AVERAGE_CASE == case_) average_case_result_file << output;
+                    }
+                    algorithm_result_file << std::endl;
+                    if (AVERAGE_CASE == case_) average_case_result_file << std::endl;
+                }
+            }
+        }
+
+        for (auto &[algo, name, supported, per_case_results]: algorithm_information) {
+            std::cout << name << ":\n";
+            for (auto &[case_, results]: per_case_results) {
+                std::cout << "  " << to_string(case_) << ":\n";
+                for (auto &[log_n, required_time]: results) {
+                    std::cout << "    " << log_n << " : " << std::setw(15) << required_time.count() << "ns\n";
                 }
             }
         }
