@@ -1,16 +1,20 @@
 #include "../definitions.h"
 #include "../utils.h"
 #include "quick_sort_v1.h"
+#include "merge_sort_v1.h"
 #include "insertion_sort_v1.h"
 #include "bubble_sort_v1.h"
 
 int main() {
     std::vector<sort::AlgorithmInformation> algorithm_information{
-            {sort::quicksort<sort::Sortable::iterator>,      "quicksort",
+            {sort::quicksort<sort::Sortable::iterator>,      "quick_sort",
                     {
                             {sort::BEST_CASE, sort::quicksort_best_case_generator},
                             {sort::WORST_CASE, sort::quicksort_worst_case_generator}
                     }
+            },
+            {sort::merge_sort<sort::Sortable::iterator>,     "merge_sort",
+                    {}
             },
             {sort::insertion_sort<sort::Sortable::iterator>, "insertion_sort",
                     {
