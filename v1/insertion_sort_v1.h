@@ -13,9 +13,9 @@ namespace sort {
             It current = unsorted_begin;
             while (current != begin && *current < *std::prev(current)) {
                 std::iter_swap(current, std::prev(current));
-                std::advance(current, -1);
+                --current;
             }
-            std::advance(unsorted_begin, 1);
+            ++unsorted_begin;
         }
     }
 
