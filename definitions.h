@@ -8,10 +8,13 @@
 #include <chrono>
 #include <string>
 
-#define DEFAULT_LOG_N_START_VALUE 10
+#define DEFAULT_LOG_N_START_VALUE 5
 #define DEFAULT_LOG_N_END_VALUE 15
 #define DEFAULT_ITERATIONS_AVERAGE_CASE 20
 #define DEFAULT_ITERATIONS_SPECIAL_CASE 5
+
+#define MIN_VALUE  0
+#define MAX_VALUE UINT8_MAX
 
 namespace sort {
     enum Case {

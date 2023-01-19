@@ -12,7 +12,7 @@
 namespace sort {
     inline Sortable generate_average_case(const size_t n) {
         std::random_device engine{};
-        std::uniform_int_distribution<value> distribution{0, static_cast<value>(-1)};
+        std::uniform_int_distribution<value> distribution{MIN_VALUE, MAX_VALUE};
         Sortable result(n);
         for (size_t i = 0; i < n; ++i)
             result[i] = distribution(engine);
@@ -140,7 +140,7 @@ namespace sort {
             for (auto &[case_, results]: per_case_results) {
                 std::cout << "  " << to_string(case_) << ":\n";
                 for (auto &[log_n, required_time]: results) {
-                    std::cout << "    " << log_n << " : " << std::setw(15) << required_time.count() << "ns\n";
+                    std::cout << "    " << log_n << " : " << std::setw(16) << required_time.count() << "ns\n";
                 }
             }
         }
