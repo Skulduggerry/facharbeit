@@ -9,20 +9,20 @@ namespace sort {
         template<std::random_access_iterator It>
         inline It default_partition(It begin, It end) {
             It ptr_left = begin;
-            It ptr_light = std::prev(end, 2);
+            It ptr_right = std::prev(end, 2);
             It pivot_ptr = std::prev(end);
             auto pivot = *pivot_ptr;
 
-            while (0 < std::distance(ptr_left, ptr_light)) {
-                while (0 < std::distance(ptr_left, ptr_light) && *ptr_left <= pivot) {
-                    std::advance(ptr_left, 1);
+            while (0 < std::distance(ptr_left, ptr_right)) {
+                while (0 < std::distance(ptr_left, ptr_right) && *ptr_left <= pivot) {
+                    ++ptr_left;
                 }
 
-                while (0 < std::distance(ptr_left, ptr_light) && pivot <= *ptr_light) {
-                    std::advance(ptr_light, -1);
+                while (0 < std::distance(ptr_left, ptr_right) && pivot <= *ptr_right) {
+                    --ptr_right;
                 }
 
-                std::iter_swap(ptr_left, ptr_light);
+                std::iter_swap(ptr_left, ptr_right);
             }
 
             if (pivot < *ptr_left) {
@@ -31,7 +31,7 @@ namespace sort {
             }
 
             while (std::distance(ptr_left, end) > 1 && *ptr_left < pivot) {
-                std::advance(ptr_left, 1);
+                ++ptr_left;
             }
             std::iter_swap(ptr_left, pivot_ptr);
             return ptr_left;
