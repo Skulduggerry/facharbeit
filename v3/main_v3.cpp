@@ -7,7 +7,6 @@ int main() {
     std::vector<sort::AlgorithmInformation> algorithm_information{
             {sort::quicksort<sort::Sortable::iterator>,           "quicksort",
                     {
-                            {sort::BEST_CASE,  sort::quicksort_best_case_generator},
                             {sort::WORST_CASE, sort::same_number_generator}
                     }
             },
