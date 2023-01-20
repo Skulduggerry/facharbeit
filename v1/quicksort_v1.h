@@ -1,5 +1,5 @@
-#ifndef CODE_QUICK_SORT_V1_H
-#define CODE_QUICK_SORT_V1_H
+#ifndef CODE_QUICKSORT_V1_H
+#define CODE_QUICKSORT_V1_H
 
 #include "../definitions.h"
 #include <numeric>
@@ -72,4 +72,4 @@ namespace sort {
 }
 
 
-#endif //CODE_QUICK_SORT_V1_H
+#endif //CODE_QUICKSORT_V1_H

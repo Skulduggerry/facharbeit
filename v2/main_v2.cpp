@@ -1,6 +1,6 @@
 #include "../definitions.h"
 #include "../utils.h"
-#include "quick_sort_v2.h"
+#include "quicksort_v2.h"
 
 int main() {
     std::vector<sort::AlgorithmInformation> algorithm_information{

@@ -1,8 +1,8 @@
-#ifndef CODE_QUICK_SORT_V2_H
-#define CODE_QUICK_SORT_V2_H
+#ifndef CODE_QUICKSORT_V2_H
+#define CODE_QUICKSORT_V2_H
 
 #include "../definitions.h"
-#include "../v1/quick_sort_v1.h"
+#include "../v1/quicksort_v1.h"
 
 namespace sort {
     namespace partition {
@@ -33,4 +33,4 @@ namespace sort {
 }
 
 
-#endif //CODE_QUICK_SORT_V2_H
+#endif //CODE_QUICKSORT_V2_H
