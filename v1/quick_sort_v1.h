@@ -5,43 +5,41 @@
 #include <numeric>
 
 namespace sort {
-    namespace partition {
-        template<std::random_access_iterator It>
-        inline It default_partition(It begin, It end) {
-            It ptr_left = begin;
-            It ptr_right = std::prev(end, 2);
-            It pivot_ptr = std::prev(end);
-            auto pivot = *pivot_ptr;
+    template<std::random_access_iterator It>
+    inline It default_partition(It begin, It end) {
+        It ptr_left = begin;
+        It ptr_right = std::prev(end, 2);
+        It pivot_ptr = std::prev(end);
+        auto pivot = *pivot_ptr;
 
-            while (0 < std::distance(ptr_left, ptr_right)) {
-                while (0 < std::distance(ptr_left, ptr_right) && *ptr_left <= pivot) {
-                    ++ptr_left;
-                }
-
-                while (0 < std::distance(ptr_left, ptr_right) && pivot <= *ptr_right) {
-                    --ptr_right;
-                }
-
-                std::iter_swap(ptr_left, ptr_right);
-            }
-
-            if (pivot < *ptr_left) {
-                std::iter_swap(pivot_ptr, ptr_left);
-                return ptr_left;
-            }
-
-            while (std::distance(ptr_left, end) > 1 && *ptr_left < pivot) {
+        while (0 < std::distance(ptr_left, ptr_right)) {
+            while (0 < std::distance(ptr_left, ptr_right) && *ptr_left <= pivot) {
                 ++ptr_left;
             }
-            std::iter_swap(ptr_left, pivot_ptr);
+
+            while (0 < std::distance(ptr_left, ptr_right) && pivot <= *ptr_right) {
+                --ptr_right;
+            }
+
+            std::iter_swap(ptr_left, ptr_right);
+        }
+
+        if (pivot < *ptr_left) {
+            std::iter_swap(pivot_ptr, ptr_left);
             return ptr_left;
         }
+
+        while (std::distance(ptr_left, end) > 1 && *ptr_left < pivot) {
+            ++ptr_left;
+        }
+        std::iter_swap(ptr_left, pivot_ptr);
+        return ptr_left;
     }
 
     template<std::random_access_iterator It>
     inline void quicksort(It begin, It end) {
         if (std::distance(begin, end) < 2) return;
-        It pivot = partition::default_partition(begin, end);
+        It pivot = default_partition(begin, end);
         quicksort(begin, pivot);
         quicksort(std::next(pivot), end);
     }
@@ -50,6 +48,10 @@ namespace sort {
         Sortable sortable(n);
         std::iota(sortable.rbegin(), sortable.rend(), 0);
         return sortable;
+    };
+
+    SortableGenerator same_number_generator = [](size_t n) {
+        return Sortable(n, 42);
     };
 
     template<typename It>

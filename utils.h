@@ -69,7 +69,7 @@ namespace sort {
         using namespace sort;
 
         if (algorithm_information.empty()) return;
-        evaluate_average_case(algorithm_information.at(0).algorithm_, "---", 15);
+        evaluate_average_case(algorithm_information.at(0).algorithm_, algorithm_information.at(0).algorithmName_, 15);
 
         for (auto &[algorithm, name, special_cases, per_case_results]: algorithm_information) {
             for (auto &[case_, generator]: special_cases) {
@@ -140,7 +140,8 @@ namespace sort {
             for (auto &[case_, results]: per_case_results) {
                 std::cout << "  " << to_string(case_) << ":\n";
                 for (auto &[log_n, required_time]: results) {
-                    std::cout << "    " << log_n << " : " << std::setw(16) << required_time.count() << "ns\n";
+                    std::cout << "    " << std::setw(2) << log_n << " : " << std::setw(16) << required_time.count()
+                              << "ns\n";
                 }
             }
         }
