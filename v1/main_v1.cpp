@@ -14,7 +14,9 @@ int main() {
                     }
             },
             {sort::heapsort<sort::Sortable::iterator>,                 "heapsort",
-                    {}
+                    {
+                            {sort::BEST_CASE, sort::heapsort_best_case_generator},
+                    }
             },
             {sort::insertion_sort<sort::Sortable::iterator>,           "insertion_sort",
                     {

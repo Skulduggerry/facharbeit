@@ -39,6 +39,10 @@ namespace sort {
             adjust_heap(begin, begin, i);
         }
     }
+
+    SortableGenerator heapsort_best_case_generator = [](size_t n) {
+        return Sortable(n, 0);
+    };
 }
 
 #endif //CODE_HEAPSORT_V1_H
