@@ -45,13 +45,13 @@ namespace sort {
     }
 
     SortableGenerator quicksort_worst_case_generator = [](size_t n) {
-        Sortable sortable(n);
-        std::iota(sortable.rbegin(), sortable.rend(), 0);
-        return sortable;
+        auto sortable_ptr = std::make_unique<Sortable>(n);
+        std::iota(sortable_ptr->begin(), sortable_ptr->end(), 0);
+        return sortable_ptr;
     };
 
     SortableGenerator same_number_generator = [](size_t n) {
-        return Sortable(n, 42);
+        return std::make_unique<Sortable>(n, 42);
     };
 
     template<typename It>
@@ -64,10 +64,10 @@ namespace sort {
     }
 
     SortableGenerator quicksort_best_case_generator = [](size_t n) {
-        Sortable sortable(n);
-        std::iota(sortable.begin(), sortable.end(), 0);
-        make_best_case(sortable.begin(), sortable.end());
-        return sortable;
+        auto sortable_ptr = std::make_unique<Sortable>(n);
+        std::iota(sortable_ptr->begin(), sortable_ptr->end(), 0);
+        make_best_case(sortable_ptr->begin(), sortable_ptr->end());
+        return sortable_ptr;
     };
 }
 

@@ -10,13 +10,13 @@
 #include <iomanip>
 
 namespace sort {
-    inline Sortable generate_average_case(const size_t n) {
+    inline std::unique_ptr<Sortable> generate_average_case(const size_t n) {
         std::random_device engine{};
         std::uniform_int_distribution<value> distribution{MIN_VALUE, MAX_VALUE};
-        Sortable result(n);
+        auto sortable_ptr = std::make_unique<Sortable>(n);
         for (size_t i = 0; i < n; ++i)
-            result[i] = distribution(engine);
-        return result;
+            (*sortable_ptr)[i] = distribution(engine);
+        return sortable_ptr;
     }
 
     inline ExecutionResults
@@ -29,13 +29,13 @@ namespace sort {
         for (size_t log_n = log_n_start; log_n <= log_n_end; ++log_n) {
             std::chrono::nanoseconds time{};
             for (size_t iteration = 0; iteration < iterations; ++iteration) {
-                Sortable sortable = generator(1ull << log_n);
+                std::unique_ptr<Sortable> sortable_ptr = generator(1ull << log_n);
                 auto start = std::chrono::high_resolution_clock::now();
-                algo(sortable.begin(), sortable.end());
+                algo(sortable_ptr->begin(), sortable_ptr->end());
                 auto end = std::chrono::high_resolution_clock::now();
                 time += (end - start);
 
-                if (!std::is_sorted(sortable.begin(), sortable.end())) {
+                if (!std::is_sorted(sortable_ptr->begin(), sortable_ptr->end())) {
                     std::cerr << "Algorithm " << algo_name << " does not work correct!" << std::endl;
                     std::abort();
                 }

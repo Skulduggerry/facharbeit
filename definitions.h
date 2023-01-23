@@ -7,25 +7,31 @@
 #include <map>
 #include <chrono>
 #include <string>
+#include <memory>
 
-#define DEFAULT_LOG_N_START_VALUE 5
-#define DEFAULT_LOG_N_END_VALUE 15
-#define DEFAULT_ITERATIONS_AVERAGE_CASE 20
+#define DEFAULT_LOG_N_START_VALUE 6
+#define DEFAULT_LOG_N_END_VALUE 16
+#define DEFAULT_ITERATIONS_AVERAGE_CASE 15
 #define DEFAULT_ITERATIONS_SPECIAL_CASE 5
+#define MANY_EQUAL_OBJETS false
 
 #define MIN_VALUE  0
-#define MAX_VALUE UINT8_MAX
+#if MANY_EQUAL_OBJETS
+#define MAX_VALUE (1ull << DEFAULT_LOG_N_END_VALUE / 2)
+#else
+#define MAX_VALUE (1ull << DEFAULT_LOG_N_END_VALUE)
+#endif
 
 namespace sort {
     enum Case {
         BEST_CASE, AVERAGE_CASE, WORST_CASE
     };
 
-    using value = uint16_t;
+    using value = uint64_t;
     using Sortable = std::vector<value>;
     using Algorithm = std::function<void(Sortable::iterator, Sortable::iterator)>;
     using ExecutionResults = std::map<size_t, std::chrono::nanoseconds>;
-    using SortableGenerator = std::function<Sortable(size_t)>;
+    using SortableGenerator = std::function<std::unique_ptr<Sortable>(size_t)>;
 
     struct AlgorithmInformation {
         Algorithm algorithm_;
