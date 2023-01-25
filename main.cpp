@@ -1,6 +1,5 @@
 #include <vector>
 #include "quicksort.h"
-#include "counting_sort.h"
 #include "heapsort.h"
 #include "insertion_sort.h"
 #include "intro_sort.h"
@@ -101,6 +100,10 @@ int main(int argc, char *argv[]) {
             {
                     intro_sort<Sortable::iterator>,             "intro_sort",
                     {}
+            },
+            {
+                    std::sort<Sortable::iterator>,              "std::sort",
+                    {}
             }
     };
 
@@ -118,7 +121,8 @@ int main(int argc, char *argv[]) {
         std::cout << "'-dbc' and '-disable_best_case'                    : don't benchmark the best case\n";
         std::cout << "'-dac' and '-disable_average_case'                 : don't benchmark the average case\n";
         std::cout << "'-dwc' and '-disable_worst_case'                   : don't benchmark the worst case\n";
-        std::cout << "'-ra' and  '-remove_algorithm' <algorithms>        : don't benchmark the given algorithms (seperated by '|')\n";
+        std::cout << "'-ea'  and '-enable_algorithm'  <algorithms>       : benchmark only the given algorithms  (seperated by '|') (cannot be used with '-da')\n";
+        std::cout << "'-da' and  '-disable_algorithm' <algorithms>       : don't benchmark the given algorithms (seperated by '|') (cannot be used with '-ea')\n";
         std::cout << "'-h'  and  '-help'                                 : get this help message\n";
 
         std::cout << "\n-----------------------\n";
@@ -175,13 +179,28 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    bool enable_algorithms = parser.has_argument("-ea") || parser.has_argument("-enable_algorithm");
+    bool disable_algorithms = parser.has_argument("-da") || parser.has_argument("-disable_algorithm");
 
-    //remove algorithms
-    std::vector<std::string> remove_algorithms = split(parser.get_argument("-ra", parser.get_argument("-remove_algorithm", "")), "|");
-    auto new_end = std::remove_if(algorithms.begin(), algorithms.end(), [&](const auto &algorithm) {
-        return std::find(remove_algorithms.begin(), remove_algorithms.end(), algorithm.algorithmName_) != remove_algorithms.end();
-    });
-    algorithms.erase(new_end, algorithms.end());
+    if (enable_algorithms && disable_algorithms) {
+        std::cerr << "Argument -enable_algorithm/-ea cannot be when -disable_algorithm/-da is used!";
+        return 0;
+    }
+
+    if (enable_algorithms || disable_algorithms) {
+        std::vector<std::string> algorithm_names;
+        std::function<bool(AlgorithmInformation &information)> contains = [&algorithm_names](auto &information) {
+            return std::find(algorithm_names.begin(), algorithm_names.end(), information.algorithmName_) != algorithm_names.end();
+        };
+
+        if (enable_algorithms) algorithm_names = split(parser.get_argument("-ea", parser.get_argument("-enable_algorithm", "")), "|");
+        else algorithm_names = split(parser.get_argument("-da", parser.get_argument("-disable_algorithm", "")), "|");
+
+        auto new_end = enable_algorithms ?
+                       std::remove_if(algorithms.begin(), algorithms.end(), [&contains](auto &information) { return !contains(information); }) :
+                       std::remove_if(algorithms.begin(), algorithms.end(), [&contains](auto &information) { return contains(information); });
+        algorithms.erase(new_end, algorithms.end());
+    }
 
     //execute add minimum one of them
     if (many_different || many_different == many_equal) {
