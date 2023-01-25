@@ -3,6 +3,7 @@
 #include "counting_sort.h"
 #include "heapsort.h"
 #include "insertion_sort.h"
+#include "intro_sort.h"
 #include "utils.h"
 
 class ArgumentParser {
@@ -29,7 +30,7 @@ public:
             try {
                 return std::stoull(*it);
             } catch (...) {
-                std::cerr << "'" << *it << "' is not a valid input for argument '" << arg << "'!";
+                std::cerr << "'" << *it << "' is not __intro_sort valid input for argument '" << arg << "'!";
                 std::abort();
             }
         }
@@ -85,10 +86,6 @@ int main(int argc, char *argv[]) {
                     }
             },
             {
-                    counting_sort<Sortable::iterator>,          "counting_sort",
-                    {}
-            },
-            {
                     heapsort<Sortable::iterator>,               "heapsort",
                     {
                             {BEST_CASE, to_special_case(heapsort_best_case_generator)}
@@ -100,6 +97,10 @@ int main(int argc, char *argv[]) {
                             {BEST_CASE, to_special_case(insertion_sort_best_case_generator)},
                             {WORST_CASE, to_special_case(insertion_sort_worst_case_generator)}
                     }
+            },
+            {
+                    intro_sort<Sortable::iterator>,             "intro_sort",
+                    {}
             }
     };
 
@@ -107,7 +108,7 @@ int main(int argc, char *argv[]) {
 
     //send help
     if (parser.has_argument("-h") || parser.has_argument("-help")) {
-        std::cout << "'-tf'  and '-to_file'                              : write the results also to a file\n";
+        std::cout << "'-tf'  and '-to_file'                              : write the results also to __intro_sort file\n";
         std::cout << "'-md'  and '-many_different'                       : use many different values\n";
         std::cout << "'-me'  and '-many_equal'                           : use many equal values\n";
         std::cout << "'-lns' and '-log_n_start'                          : set start number of elements\n";
@@ -184,9 +185,17 @@ int main(int argc, char *argv[]) {
 
     //execute add minimum one of them
     if (many_different || many_different == many_equal) {
+        std::cout << "-----------------------------------------------\n";
+        std::cout << "Benchmark algorithms with many different values\n";
+        std::cout << "-----------------------------------------------\n";
         benchmark(algorithms, MAX_VALUE_MANY_DIFFERENT, log_n_start, log_n_end, to_file, root_path + "/many_different");
+        std::cout << '\n';
     }
     if (many_equal || many_equal == many_different) {
+        std::cout << "-------------------------------------------\n";
+        std::cout << "Benchmark algorithms with many equal values\n";
+        std::cout << "-------------------------------------------\n";
         benchmark(algorithms, MAX_VALUE_MANY_EQUAL, log_n_start, log_n_end, to_file, root_path + "/many_equal");
+        std::cout << '\n';
     }
 }
