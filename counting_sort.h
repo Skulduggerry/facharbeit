@@ -5,7 +5,7 @@
 
 namespace sort {
     template<std::bidirectional_iterator It>
-    void counting_sort(It begin, It end) {
+    inline void counting_sort(It begin, It end) {
         using ValueType = std::iterator_traits<It>::value_type;
         std::vector<ValueType> counts(std::distance(begin, end) + 1, 0);
 

@@ -6,7 +6,7 @@
 namespace sort {
 
     template<std::random_access_iterator It>
-    void adjust_heap(It begin_heap, It parent, It end_heap) {
+    inline void adjust_heap(It begin_heap, It parent, It end_heap) {
         It child = parent + (parent - begin_heap) + 1;
 
         //go the heap down and swap with the greatest child if required
@@ -24,7 +24,7 @@ namespace sort {
     }
 
     template<std::random_access_iterator It>
-    void build_heap(It begin, It end) {
+    inline void build_heap(It begin, It end) {
         It parent = begin + (end - begin - 2) / 2;
         for (; parent >= begin; --parent) {
             adjust_heap(begin, parent, end);
@@ -32,7 +32,7 @@ namespace sort {
     }
 
     template<std::random_access_iterator It>
-    void heapsort(It begin, It end) {
+    inline void heapsort(It begin, It end) {
         build_heap(begin, end);
         for (It i = std::prev(end); std::distance(begin, i) > 0; --i) {
             std::iter_swap(begin, i); //put the new greatest value to the beginning of the sorted array

@@ -147,12 +147,12 @@ namespace sort {
         return results;
     }
 
-    void benchmark(std::vector<AlgorithmInformation> &algorithms,
-                   const MaxValueFunction &max_value_function,
-                   const size_t log_n_start,
-                   const size_t log_n_end,
-                   bool to_file,
-                   const std::filesystem::path &parent_dir = "./results") {
+    inline void benchmark(std::vector<AlgorithmInformation> &algorithms,
+                          const MaxValueFunction &max_value_function,
+                          const size_t log_n_start,
+                          const size_t log_n_end,
+                          bool to_file,
+                          const std::filesystem::path &parent_dir = "./results") {
 
         for (auto &[algorithm, name, executed_cases, per_case_results]: algorithms) {
             for (auto &[case_, case_execution_information]: executed_cases) {

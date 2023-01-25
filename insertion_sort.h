@@ -7,7 +7,7 @@
 
 namespace sort {
     template<std::bidirectional_iterator It>
-    void insertion_sort(It begin, It end) {
+    inline void insertion_sort(It begin, It end) {
         It unsorted_begin = std::next(begin);
 
         while (unsorted_begin != end) {
