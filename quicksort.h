@@ -24,12 +24,7 @@ namespace sort {
             std::iter_swap(ptr_left, ptr_right);
         }
 
-        if (pivot < *ptr_left) {
-            std::iter_swap(pivot_ptr, ptr_left);
-            return ptr_left;
-        }
-
-        while (std::distance(ptr_left, end) > 1 && *ptr_left < pivot) {
+        while (std::distance(ptr_left, end) && *ptr_left < pivot) {
             ++ptr_left;
         }
         std::iter_swap(ptr_left, pivot_ptr);
@@ -38,16 +33,18 @@ namespace sort {
 
     template<std::random_access_iterator It>
     inline It partition_median_of_3(It begin, It end) {
-        auto first_elem = *begin;
-        It middle = std::next(begin, (end - begin) / 2 - 1);
-        auto middle_elem = *middle;
-        It last = std::prev(end);
-        auto last_elem = *last;
+        {
+            auto first_elem = *begin;
+            It middle = std::next(begin, (end - begin) / 2 - 1);
+            auto middle_elem = *middle;
+            It last = std::prev(end);
+            auto last_elem = *last;
 
-        if ((first_elem > middle_elem) ^ (first_elem > last_elem))
-            std::iter_swap(begin, last);
-        else if ((middle_elem < first_elem) ^ (middle_elem < last_elem))
-            std::iter_swap(middle, last);
+            if ((first_elem > middle_elem) ^ (first_elem > last_elem))
+                std::iter_swap(begin, last);
+            else if ((middle_elem < first_elem) ^ (middle_elem < last_elem))
+                std::iter_swap(middle, last);
+        }
 
         return default_partition(begin, end);
     }
