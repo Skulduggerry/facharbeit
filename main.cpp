@@ -29,7 +29,7 @@ public:
             try {
                 return std::stoull(*it);
             } catch (...) {
-                std::cerr << "'" << *it << "' is not __intro_sort valid input for argument '" << arg << "'!";
+                std::cerr << "'" << *it << "' is not intro_sort_many_equal_optimized valid input for argument '" << arg << "'!";
                 std::abort();
             }
         }
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 
     //send help
     if (parser.has_argument("-h") || parser.has_argument("-help")) {
-        std::cout << "'-tf'  and '-to_file'                              : write the results also to __intro_sort file\n";
+        std::cout << "'-tf'  and '-to_file'                              : write the results also to result file\n";
         std::cout << "'-md'  and '-many_different'                       : use many different values\n";
         std::cout << "'-me'  and '-many_equal'                           : use many equal values\n";
         std::cout << "'-lns' and '-log_n_start'                          : set start number of elements\n";
