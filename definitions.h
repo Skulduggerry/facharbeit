@@ -13,6 +13,7 @@
 #define DEFAULT_ITERATIONS_AVERAGE_CASE 10
 #define DEFAULT_ITERATIONS_SPECIAL_CASE 3
 #define MIN_VALUE 0
+#define TO_PRIMITIVE_THRESHOLD 10
 
 namespace sort {
     using clock = std::chrono::high_resolution_clock;
