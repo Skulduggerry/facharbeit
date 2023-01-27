@@ -3,6 +3,7 @@
 
 #include "definitions.h"
 #include "utils.h"
+#include <numeric>
 
 namespace sort {
     template<std::random_access_iterator It>
