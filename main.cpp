@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
                     {}
             },
             {
-                    std::sort<Sortable::iterator>,              "std::sort",
+                    std::sort<Sortable::iterator>,              "std_sort",
                     {}
             }
     };
@@ -122,8 +122,8 @@ int main(int argc, char *argv[]) {
         std::cout << "'-dac' and '-disable_average_case'                 : don't benchmark the average case\n";
         std::cout << "'-dwc' and '-disable_worst_case'                   : don't benchmark the worst case\n";
         std::cout << "'-ea'  and '-enable_algorithm'   <algorithms>      : benchmark only the given algorithms  (seperated by '|') (cannot be used with '-da')\n";
-        std::cout << "'-da'  and  '-disable_algorithm' <algorithms>      : don't benchmark the given algorithms (seperated by '|') (cannot be used with '-ea')\n";
-        std::cout << "'-h'   and  '-help'                                : get this help message\n";
+        std::cout << "'-da'  and '-disable_algorithm' <algorithms>       : don't benchmark the given algorithms (seperated by '|') (cannot be used with '-ea')\n";
+        std::cout << "'-h'   and '-help'                                 : get this help message\n";
 
         std::cout << "\n-----------------------\n";
         std::cout << "Supported Algorithms:\n";

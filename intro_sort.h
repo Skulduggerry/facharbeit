@@ -25,17 +25,28 @@ namespace sort {
     }
 
     template<std::random_access_iterator It>
-    inline void intro_sort(It begin, It end) {
-        if(std::distance(begin, end) < 2) return;
+    inline void _intro_sort(It begin, It end, size_t max_depth) {
+        if (std::distance(begin, end) < 2) return;
 
         if (std::distance(begin, end) < TO_PRIMITIVE_THRESHOLD) {
             insertion_sort(begin, end);
             return;
         }
 
+        if (max_depth == 0) {
+            heapsort(begin, end);
+            return;
+        }
+
         auto [begin_same, end_same] = _intro_sort_partition_(begin, end);
-        intro_sort(begin, begin_same);
-        intro_sort(end_same, end);
+        _intro_sort(begin, begin_same, --max_depth);
+        _intro_sort(end_same, end, max_depth);
+    }
+
+    template<std::random_access_iterator It>
+    inline void intro_sort(It begin, It end) {
+        size_t max_depth = std::floor(log2(std::distance(begin, end) * 2));
+        _intro_sort(begin, end, max_depth);
     }
 }
 
