@@ -112,8 +112,8 @@ int main(int argc, char *argv[]) {
     //send help
     if (parser.has_argument("-h") || parser.has_argument("-help")) {
         std::cout << "'-tf'  and '-to_file'                              : write the results also to result file\n";
-        std::cout << "'-md'  and '-many_different'                       : use many different values\n";
-        std::cout << "'-me'  and '-many_equal'                           : use many equal values\n";
+        std::cout << "'-md'  and '-many_different'                       : use many different values (might not effect best- or worst-case)\n";
+        std::cout << "'-me'  and '-many_equal'                           : use many equal values     (might not effect best- or worst-case)\n";
         std::cout << "'-lns' and '-log_n_start'                          : set start number of elements\n";
         std::cout << "'-lne' and '-log_n_end'                            : set inclusive number of elements\n";
         std::cout << "'-isc' and '-iterations_special_case' <iterations> : set iterations used for special cases (0 to disable)\n";
@@ -121,9 +121,9 @@ int main(int argc, char *argv[]) {
         std::cout << "'-dbc' and '-disable_best_case'                    : don't benchmark the best case\n";
         std::cout << "'-dac' and '-disable_average_case'                 : don't benchmark the average case\n";
         std::cout << "'-dwc' and '-disable_worst_case'                   : don't benchmark the worst case\n";
-        std::cout << "'-ea'  and '-enable_algorithm'  <algorithms>       : benchmark only the given algorithms  (seperated by '|') (cannot be used with '-da')\n";
-        std::cout << "'-da' and  '-disable_algorithm' <algorithms>       : don't benchmark the given algorithms (seperated by '|') (cannot be used with '-ea')\n";
-        std::cout << "'-h'  and  '-help'                                 : get this help message\n";
+        std::cout << "'-ea'  and '-enable_algorithm'   <algorithms>      : benchmark only the given algorithms  (seperated by '|') (cannot be used with '-da')\n";
+        std::cout << "'-da'  and  '-disable_algorithm' <algorithms>      : don't benchmark the given algorithms (seperated by '|') (cannot be used with '-ea')\n";
+        std::cout << "'-h'   and  '-help'                                : get this help message\n";
 
         std::cout << "\n-----------------------\n";
         std::cout << "Supported Algorithms:\n";
