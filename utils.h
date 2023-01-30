@@ -48,7 +48,7 @@ namespace sort {
         }
         output_file << '\n';
 
-        return std::move(output_file);
+        return output_file;
     }
 
     inline void output_average_case(const std::vector<AlgorithmInformation> &algorithms,
@@ -59,7 +59,7 @@ namespace sort {
                                                                 log_n_start, log_n_end);
         for (const AlgorithmInformation &information: algorithms) {
             if (!information.perCaseResults_.contains(AVERAGE_CASE)) continue;
-            average_case_results << information.algorithmName_;
+            average_case_results << information.algorithmName_ << ";";
             for (const auto &[log_n, duration]: information.perCaseResults_.at(AVERAGE_CASE)) {
                 average_case_results << duration.count() << ";";
             }
