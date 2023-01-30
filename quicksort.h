@@ -73,12 +73,14 @@ namespace sort {
             std::iter_swap(left_ptr, right_ptr);
 
             if (pivot == *left_ptr) {
-                std::iter_swap(left_ptr, equal_ptr_left);
+                if (left_ptr != equal_ptr_left)
+                    std::iter_swap(left_ptr, equal_ptr_left);
                 ++equal_ptr_left;
             }
 
             if (pivot == *right_ptr) {
-                std::iter_swap(right_ptr, equal_ptr_right);
+                if (right_ptr != equal_ptr_right)
+                    std::iter_swap(right_ptr, equal_ptr_right);
                 --equal_ptr_right;
             }
 
