@@ -20,16 +20,9 @@ namespace sort {
         return sortable_ptr;
     };
 
-    inline std::string to_string(const Case &case_) {
-        switch (case_) {
-            case BEST_CASE:
-                return "BEST_CASE";
-            case AVERAGE_CASE:
-                return "AVERAGE_CASE";
-            default:
-                return "WORST_CASE";
-        }
-    }
+    SortableGenerator same_number_generator = [](size_t n, Value) {
+        return std::make_unique<Sortable>(n, 42);
+    };
 
     inline std::ofstream
     create_output_file(const std::filesystem::path &parent_dir, const std::string &file_name, size_t log_n_start,
@@ -86,7 +79,7 @@ namespace sort {
                 for (auto &[case_, results]: per_case_results) {
                     if (case_ == AVERAGE_CASE) contains_average_case = true;
 
-                    algorithm_results << to_string(case_) << ";";
+                    algorithm_results << case_ << ";";
                     for (auto &[log_n, duration]: results) {
                         algorithm_results << duration.count() << ";";
                     }
@@ -104,7 +97,7 @@ namespace sort {
         for (auto &[algo, name, executed_cases, per_case_results]: algorithms) {
             std::cout << name << ":\n";
             for (auto &[case_, results]: per_case_results) {
-                std::cout << "  " << to_string(case_) << ":\n";
+                std::cout << "  " << case_ << ":\n";
                 for (auto &[log_n, required_time]: results) {
                     std::cout << "    " << std::setw(2) << log_n << " : " << std::setw(16) << required_time.count()
                               << "ns\n";

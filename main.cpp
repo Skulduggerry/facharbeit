@@ -55,8 +55,16 @@ std::vector<std::string> split(const std::string &s, const std::string &delimite
     return res;
 }
 
-std::pair<size_t, sort::SortableGenerator> to_special_case(const sort::SortableGenerator &generator) {
-    return std::make_pair(DEFAULT_ITERATIONS_SPECIAL_CASE, generator);
+std::pair<std::string, std::pair<size_t, sort::SortableGenerator>> to_special_case(const std::string &name, const sort::SortableGenerator &generator) {
+    return std::make_pair(name, std::make_pair(DEFAULT_ITERATIONS_AVERAGE_CASE, generator));
+}
+
+std::pair<std::string, std::pair<size_t, sort::SortableGenerator>> to_best_case(const sort::SortableGenerator &generator) {
+    return to_special_case(sort::BEST_CASE, generator);
+}
+
+std::pair<std::string, std::pair<size_t, sort::SortableGenerator>> to_worst_case(const sort::SortableGenerator &generator) {
+    return to_special_case(sort::WORST_CASE, generator);
 }
 
 int main(int argc, char *argv[]) {
@@ -66,35 +74,36 @@ int main(int argc, char *argv[]) {
             {
                     quicksort<Sortable::iterator>,              "quicksort",
                     {
-                            {BEST_CASE, to_special_case(quicksort_best_case_generator)},
-                            {WORST_CASE, to_special_case(quicksort_worst_case_generator)}
+                            to_best_case(quicksort_best_case_generator),
+                            to_special_case("WORST_CASE_SORTED", quicksort_worst_case_generator),
+                            to_special_case("WORST_CASE_ALL_SAME", same_number_generator)
                     }
             },
             {
                     quick_sort_median_of_3<Sortable::iterator>, "quicksort_median_of_three",
                     {
-                            {BEST_CASE, to_special_case(quicksort_worst_case_generator)},
-                            {WORST_CASE, to_special_case(same_number_generator)}
+                            to_best_case(quicksort_worst_case_generator),
+                            to_worst_case(same_number_generator)
                     }
             },
             {
                     three_way_quicksort<Sortable::iterator>,    "three_way_quicksort",
                     {
-                            {BEST_CASE, to_special_case(same_number_generator)},
-                            {WORST_CASE, to_special_case(quicksort_worst_case_generator)}
+                            to_best_case(same_number_generator),
+                            to_worst_case(quicksort_worst_case_generator)
                     }
             },
             {
                     heapsort<Sortable::iterator>,               "heapsort",
                     {
-                            {BEST_CASE, to_special_case(heapsort_best_case_generator)}
+                            to_best_case(same_number_generator)
                     }
             },
             {
                     insertion_sort<Sortable::iterator>,         "insertion_sort",
                     {
-                            {BEST_CASE, to_special_case(insertion_sort_best_case_generator)},
-                            {WORST_CASE, to_special_case(insertion_sort_worst_case_generator)}
+                            to_best_case(insertion_sort_best_case_generator),
+                            to_worst_case(insertion_sort_worst_case_generator)
                     }
             },
             {
@@ -152,14 +161,18 @@ int main(int argc, char *argv[]) {
     //remove all best cases
     if (disable_best_case) {
         for (auto &algorithm: algorithms) {
-            algorithm.executedCases_.erase(BEST_CASE);
+            erase_if(algorithm.executedCases_, [](const auto &case_) {
+                return case_.first.rfind(BEST_CASE, 0) == 0;
+            });
         }
     }
 
     //remove all worst cases
     if (disable_worst_case) {
         for (auto &algorithm: algorithms) {
-            algorithm.executedCases_.erase(WORST_CASE);
+            erase_if(algorithm.executedCases_, [](const auto &case_) {
+                return case_.first.rfind(WORST_CASE, 0) == 0;
+            });
         }
     }
 

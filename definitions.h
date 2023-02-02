@@ -25,20 +25,19 @@ namespace sort {
     using SortableGenerator = std::function<std::unique_ptr<Sortable>(size_t n,
                                                                       Value max_value)>; //max value is only required for average case
     using CaseExecutionInformation = std::pair<size_t, SortableGenerator>; //store the iterations and the generator
-
-    enum Case {
-        BEST_CASE, AVERAGE_CASE, WORST_CASE
-    };
+    const std::string BEST_CASE = "BEST_CASE";
+    const std::string AVERAGE_CASE = "AVERAGE_CASE";
+    const std::string WORST_CASE = "WORST_CASE";
 
     struct AlgorithmInformation {
         Algorithm algorithm_;
         std::string algorithmName_;
-        std::map<Case, CaseExecutionInformation> executedCases_;
-        std::map<Case, ExecutionResults> perCaseResults_;
+        std::map<std::string, CaseExecutionInformation> executedCases_;
+        std::map<std::string, ExecutionResults> perCaseResults_;
 
         AlgorithmInformation(Algorithm algorithm,
                              std::string algorithmName,
-                             std::map<Case, CaseExecutionInformation> executedCases) :
+                             std::map<std::string, CaseExecutionInformation> executedCases) :
                 algorithm_(std::move(algorithm)),
                 algorithmName_(std::move(algorithmName)),
                 executedCases_(std::move(executedCases)),

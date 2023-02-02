@@ -132,10 +132,6 @@ namespace sort {
         return sortable_ptr;
     };
 
-    SortableGenerator same_number_generator = [](size_t n, Value) {
-        return std::make_unique<Sortable>(n, 42);
-    };
-
     template<std::random_access_iterator It>
     void make_best_case(It begin, It end) {
         if (std::distance(begin, end) < 2) return;
