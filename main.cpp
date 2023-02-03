@@ -122,12 +122,18 @@ int main(int argc, char *argv[]) {
     //send help
     if (parser.has_argument("-h") || parser.has_argument("-help")) {
         std::cout << "'-tf'  and '-to_file'                              : write the results also to result file\n";
+        std::cout << "'-p'   and '-path'                                 : set the root path for result files\n";
+
         std::cout << "'-md'  and '-many_different'                       : use many different values (might not effect best- or worst-case)\n";
         std::cout << "'-me'  and '-many_equal'                           : use many equal values     (might not effect best- or worst-case)\n";
+        std::cout
+                << "'-mep' and '-many_equal_percentage'                : set percentage of equal values when executing '-me' (must be between 0 and 100 or it will to the best matching)";
         std::cout << "'-lns' and '-log_n_start'                          : set start number of elements\n";
         std::cout << "'-lne' and '-log_n_end'                            : set inclusive number of elements\n";
+
         std::cout << "'-isc' and '-iterations_special_case' <iterations> : set iterations used for special cases (0 to disable)\n";
         std::cout << "'-iac' and '-iterations_average_case' <iterations> : set iterations used for average case (0 to disable)\n";
+
         std::cout << "'-dbc' and '-disable_best_case'                    : don't benchmark the best case\n";
         std::cout << "'-dac' and '-disable_average_case'                 : don't benchmark the average case\n";
         std::cout << "'-dwc' and '-disable_worst_case'                   : don't benchmark the worst case\n";
@@ -145,18 +151,24 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    //find all required information
+    //result settings
     bool to_file = parser.has_argument("-tf") || parser.has_argument("-to_file");
     std::string root_path = parser.get_argument("-path", parser.get_argument("-p", "./results"));
+
+    //precision settings
+    size_t iterations_special_case = parser.get_ull_argument("-isc", parser.get_ull_argument("-iterations_special_case", DEFAULT_ITERATIONS_SPECIAL_CASE));
+    size_t iterations_average_case = parser.get_ull_argument("-iac", parser.get_ull_argument("-iterations_average_case", DEFAULT_ITERATIONS_AVERAGE_CASE));
+
+    //enable or disable specific parts of the benchmark
     bool many_different = parser.has_argument("-md") || parser.has_argument("-many_different");
     bool many_equal = parser.has_argument("-me") || parser.has_argument("-many_equal");
+    size_t percentage = parser.get_ull_argument("-mep", parser.get_ull_argument("-many_equal_percentage", DEFAULT_PERCENTAGE_EQUAL_VALUES));
+    if (percentage < 0) percentage = 0;
+    else if (percentage > 100) percentage = 100;
     size_t log_n_start = parser.get_ull_argument("-lns", parser.get_ull_argument("log_n_start", DEFAULT_LOG_N_START));
     size_t log_n_end = parser.get_ull_argument("-lne", parser.get_ull_argument("-log_n_end", DEFAULT_LOG_N_END));
-
-    size_t iterations_special_case = parser.get_ull_argument("-isc", parser.get_ull_argument("-iterations_special_case", DEFAULT_ITERATIONS_SPECIAL_CASE));
     bool disable_best_case = parser.has_argument("-dbc") || parser.has_argument("-disable_best_case") || iterations_special_case == 0;
     bool disable_worst_case = parser.has_argument("-dwc") || parser.has_argument("-disable_worst_case") || iterations_special_case == 0;
-    size_t iterations_average_case = parser.get_ull_argument("-iac", parser.get_ull_argument("-iterations_average_case", DEFAULT_ITERATIONS_AVERAGE_CASE));
     bool disable_average_case = parser.has_argument("-dac") || parser.has_argument("-disable_average_case") || iterations_average_case == 0;
 
     //remove all best cases
@@ -228,7 +240,7 @@ int main(int argc, char *argv[]) {
         std::cout << "-------------------------------------------\n";
         std::cout << "Benchmark algorithms with many equal values\n";
         std::cout << "-------------------------------------------\n";
-        benchmark(algorithms, MAX_VALUE_MANY_EQUAL, log_n_start, log_n_end, to_file, root_path + "/many_equal");
+        benchmark(algorithms, [percentage](size_t n) { return MAX_VALUE_MANY_EQUAL(n, percentage); }, log_n_start, log_n_end, to_file, root_path + "/many_equal");
         std::cout << '\n';
     }
 }

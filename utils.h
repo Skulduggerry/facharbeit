@@ -130,9 +130,10 @@ namespace sort {
         for (size_t log_n = log_n_start; log_n <= log_n_end; ++log_n) {
             clock::duration total_duration{};
 
-            Value max_value = max_value_function(log_n);
+            Value n = 1ull << log_n;
+            Value max_value = max_value_function(n);
             for (size_t iteration = 0; iteration < iterations; ++iteration) {
-                auto sortable = generator(1ull << log_n, max_value);
+                auto sortable = generator(n, max_value);
                 auto start_point = clock::now();
                 algorithm(sortable->begin(), sortable->end());
                 auto end_point = clock::now();
