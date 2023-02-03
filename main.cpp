@@ -102,8 +102,9 @@ int main(int argc, char *argv[]) {
             {
                     insertion_sort<Sortable::iterator>,         "insertion_sort",
                     {
-                            to_best_case(insertion_sort_best_case_generator),
-                            to_worst_case(insertion_sort_worst_case_generator)
+                            to_special_case("BEST_CASE_SORTED", sorted_number_generator),
+                            to_special_case("BEST_CASE_ALL_SAME", same_number_generator),
+                            to_worst_case(reverse_sorted_number_generator)
                     }
             },
             {

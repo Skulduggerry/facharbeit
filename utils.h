@@ -24,6 +24,18 @@ namespace sort {
         return std::make_unique<Sortable>(n, 42);
     };
 
+    SortableGenerator sorted_number_generator = [](size_t n, Value) {
+        std::unique_ptr sortable = std::make_unique<Sortable>(n);
+        std::iota(sortable->begin(), sortable->end(), 0);
+        return sortable;
+    };
+
+    SortableGenerator reverse_sorted_number_generator = [](size_t n, Value) {
+        std::unique_ptr sortable = std::make_unique<Sortable>(n);
+        std::iota(sortable->rbegin(), sortable->rend(), 0);
+        return sortable;
+    };
+
     inline std::ofstream
     create_output_file(const std::filesystem::path &parent_dir, const std::string &file_name, size_t log_n_start,
                        size_t log_n_end) {
