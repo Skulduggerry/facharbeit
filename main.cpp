@@ -24,16 +24,23 @@ public:
     }
 
     size_t get_ull_argument(const std::string &arg, size_t def) {
-        auto it = std::find(arguments.begin(), arguments.end(), arg);
-        if (it != arguments.end() && ++it != arguments.end()) {
-            try {
-                return std::stoull(*it);
-            } catch (...) {
-                std::cerr << "'" << *it << "' is not intro_sort_many_equal_optimized valid input for argument '" << arg << "'!";
-                std::abort();
-            }
+        auto param = get_argument(arg, std::to_string(def));
+        try {
+            return std::stoull(param);
+        } catch (...) {
+            std::cerr << "'" << param << "' is not a valid input for argument '" << arg << "'!";
+            return def;
         }
-        return def;
+    }
+
+    long double get_ld_argument(const std::string &arg, long double def) {
+        auto param = get_argument(arg, std::to_string(def));
+        try {
+            return std::stold(param);
+        } catch (...) {
+            std::cerr << "'" << param << "' is not a valid input for argument '" << arg << "'!";
+            return def;
+        }
     }
 
 private:
@@ -127,7 +134,7 @@ int main(int argc, char *argv[]) {
         std::cout << "'-md'  and '-many_different'                       : use many different values (might not effect best- or worst-case)\n";
         std::cout << "'-me'  and '-many_equal'                           : use many equal values     (might not effect best- or worst-case)\n";
         std::cout
-                << "'-mep' and '-many_equal_percentage'                : set percentage of equal values when executing '-me' (must be between 0 and 100 or it will to the best matching)\n";
+                << "'-mep' and '-many_equal_percentage'                : set percentage of equal values when executing '-me' (must be between 0 and 50 or it will to the best matching)\n";
         std::cout << "'-lns' and '-log_n_start'                          : set start number of elements\n";
         std::cout << "'-lne' and '-log_n_end'                            : set inclusive number of elements\n";
 
@@ -162,9 +169,9 @@ int main(int argc, char *argv[]) {
     //enable or disable specific parts of the benchmark
     bool many_different = parser.has_argument("-md") || parser.has_argument("-many_different");
     bool many_equal = parser.has_argument("-me") || parser.has_argument("-many_equal");
-    size_t percentage = parser.get_ull_argument("-mep", parser.get_ull_argument("-many_equal_percentage", DEFAULT_PERCENTAGE_EQUAL_VALUES));
+    long double percentage = parser.get_ld_argument("-mep", parser.get_ld_argument("-many_equal_percentage", DEFAULT_PERCENTAGE_EQUAL_VALUES));
     if (percentage < 0) percentage = 0;
-    else if (percentage > 100) percentage = 100;
+    else if (percentage > 50) percentage = 50;
     size_t log_n_start = parser.get_ull_argument("-lns", parser.get_ull_argument("log_n_start", DEFAULT_LOG_N_START));
     size_t log_n_end = parser.get_ull_argument("-lne", parser.get_ull_argument("-log_n_end", DEFAULT_LOG_N_END));
     bool disable_best_case = parser.has_argument("-dbc") || parser.has_argument("-disable_best_case") || iterations_special_case == 0;

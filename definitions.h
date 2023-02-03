@@ -13,7 +13,7 @@
 #define DEFAULT_LOG_N_START 7
 #define DEFAULT_LOG_N_END 15
 #define MIN_VALUE 0
-#define DEFAULT_PERCENTAGE_EQUAL_VALUES 50
+#define DEFAULT_PERCENTAGE_EQUAL_VALUES 25
 #define TO_PRIMITIVE_THRESHOLD 8
 
 namespace sort {
@@ -45,8 +45,8 @@ namespace sort {
     };
 
     //generator function to generate many equal values
-    Value MAX_VALUE_MANY_EQUAL(size_t n, size_t percentage_equal) {
-        return n * (1 - Value(double(percentage_equal) / double(100)));
+    Value MAX_VALUE_MANY_EQUAL(size_t n, long double percentage_equal) {
+        return Value(1 / (percentage_equal / double(100)));
     }
 
     //generator function to make most of the values different
