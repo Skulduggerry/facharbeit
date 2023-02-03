@@ -50,8 +50,8 @@ namespace sort {
     }
 
     //generator function to make most of the values different
-    Value MAX_VALUE_MANY_DIFFERENT(size_t log_n) {
-        return 1ull << size_t(log_n * 2);
+    Value MAX_VALUE_MANY_DIFFERENT(size_t) {
+        return Value(-1);
     }
 }
 
