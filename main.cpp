@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
         std::cout << "'-md'  and '-many_different'                       : use many different values (might not effect best- or worst-case)\n";
         std::cout << "'-me'  and '-many_equal'                           : use many equal values     (might not effect best- or worst-case)\n";
         std::cout
-                << "'-mep' and '-many_equal_percentage'                : set percentage of equal values when executing '-me' (must be between 0 and 100 or it will to the best matching)";
+                << "'-mep' and '-many_equal_percentage'                : set percentage of equal values when executing '-me' (must be between 0 and 100 or it will to the best matching)\n";
         std::cout << "'-lns' and '-log_n_start'                          : set start number of elements\n";
         std::cout << "'-lne' and '-log_n_end'                            : set inclusive number of elements\n";
 
