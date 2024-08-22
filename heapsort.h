@@ -40,8 +40,8 @@ namespace sort {
         }
     }
 
-    SortableGenerator heapsort_best_case_generator = [](size_t n, Value) {
-        return std::make_unique<Sortable>(n, 0);
+    SortableGenerator heapsort_best_case_generator = [](uint64_t n, Value) {
+        return Sortable(n, 0);
     };
 }
 

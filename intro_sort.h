@@ -25,7 +25,7 @@ namespace sort {
     }
 
     template<std::random_access_iterator It>
-    inline void _intro_sort(It begin, It end, size_t max_depth) {
+    inline void _intro_sort(It begin, It end, uint64_t max_depth) {
         if (std::distance(begin, end) < 2) return;
 
         if (std::distance(begin, end) < TO_PRIMITIVE_THRESHOLD) {

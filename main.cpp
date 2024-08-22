@@ -1,4 +1,3 @@
-#include <vector>
 #include "quicksort.h"
 #include "heapsort.h"
 #include "insertion_sort.h"
@@ -23,7 +22,7 @@ public:
         return def;
     }
 
-    size_t get_ull_argument(const std::string &arg, size_t def) {
+    uint64_t get_ull_argument(const std::string &arg, uint64_t def) {
         auto param = get_argument(arg, std::to_string(def));
         try {
             return std::stoull(param);
@@ -48,7 +47,7 @@ private:
 };
 
 std::vector<std::string> split(const std::string &s, const std::string &delimiter) {
-    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    uint64_t pos_start = 0, pos_end, delim_len = delimiter.length();
     std::string token;
     std::vector<std::string> res;
 
@@ -62,15 +61,15 @@ std::vector<std::string> split(const std::string &s, const std::string &delimite
     return res;
 }
 
-std::pair<std::string, std::pair<size_t, sort::SortableGenerator>> to_special_case(const std::string &name, const sort::SortableGenerator &generator) {
+std::pair<std::string, std::pair<uint64_t, sort::SortableGenerator>> to_special_case(const std::string &name, const sort::SortableGenerator &generator) {
     return std::make_pair(name, std::make_pair(DEFAULT_ITERATIONS_AVERAGE_CASE, generator));
 }
 
-std::pair<std::string, std::pair<size_t, sort::SortableGenerator>> to_best_case(const sort::SortableGenerator &generator) {
+std::pair<std::string, std::pair<uint64_t, sort::SortableGenerator>> to_best_case(const sort::SortableGenerator &generator) {
     return to_special_case(sort::BEST_CASE, generator);
 }
 
-std::pair<std::string, std::pair<size_t, sort::SortableGenerator>> to_worst_case(const sort::SortableGenerator &generator) {
+std::pair<std::string, std::pair<uint64_t, sort::SortableGenerator>> to_worst_case(const sort::SortableGenerator &generator) {
     return to_special_case(sort::WORST_CASE, generator);
 }
 
@@ -163,8 +162,8 @@ int main(int argc, char *argv[]) {
     std::string root_path = parser.get_argument("-path", parser.get_argument("-p", "./results"));
 
     //precision settings
-    size_t iterations_special_case = parser.get_ull_argument("-isc", parser.get_ull_argument("-iterations_special_case", DEFAULT_ITERATIONS_SPECIAL_CASE));
-    size_t iterations_average_case = parser.get_ull_argument("-iac", parser.get_ull_argument("-iterations_average_case", DEFAULT_ITERATIONS_AVERAGE_CASE));
+    uint64_t iterations_special_case = parser.get_ull_argument("-isc", parser.get_ull_argument("-iterations_special_case", DEFAULT_ITERATIONS_SPECIAL_CASE));
+    uint64_t iterations_average_case = parser.get_ull_argument("-iac", parser.get_ull_argument("-iterations_average_case", DEFAULT_ITERATIONS_AVERAGE_CASE));
 
     //enable or disable specific parts of the benchmark
     bool many_different = parser.has_argument("-md") || parser.has_argument("-many_different");
@@ -172,8 +171,8 @@ int main(int argc, char *argv[]) {
     long double percentage = parser.get_ld_argument("-mep", parser.get_ld_argument("-many_equal_percentage", DEFAULT_PERCENTAGE_EQUAL_VALUES));
     if (percentage < 0) percentage = 0;
     else if (percentage > 50) percentage = 50;
-    size_t log_n_start = parser.get_ull_argument("-lns", parser.get_ull_argument("log_n_start", DEFAULT_LOG_N_START));
-    size_t log_n_end = parser.get_ull_argument("-lne", parser.get_ull_argument("-log_n_end", DEFAULT_LOG_N_END));
+    uint64_t log_n_start = parser.get_ull_argument("-lns", parser.get_ull_argument("log_n_start", DEFAULT_LOG_N_START));
+    uint64_t log_n_end = parser.get_ull_argument("-lne", parser.get_ull_argument("-log_n_end", DEFAULT_LOG_N_END));
     bool disable_best_case = parser.has_argument("-dbc") || parser.has_argument("-disable_best_case") || iterations_special_case == 0;
     bool disable_worst_case = parser.has_argument("-dwc") || parser.has_argument("-disable_worst_case") || iterations_special_case == 0;
     bool disable_average_case = parser.has_argument("-dac") || parser.has_argument("-disable_average_case") || iterations_average_case == 0;
@@ -247,7 +246,7 @@ int main(int argc, char *argv[]) {
         std::cout << "-------------------------------------------\n";
         std::cout << "Benchmark algorithms with many equal values\n";
         std::cout << "-------------------------------------------\n";
-        benchmark(algorithms, [percentage](size_t n) { return MAX_VALUE_MANY_EQUAL(n, percentage); }, log_n_start, log_n_end, to_file, root_path + "/many_equal");
+        benchmark(algorithms, [percentage](uint64_t n) { return MAX_VALUE_MANY_EQUAL(n, percentage); }, log_n_start, log_n_end, to_file, root_path + "/many_equal");
         std::cout << '\n';
     }
 }

@@ -4,41 +4,41 @@
 #include "definitions.h"
 #include <random>
 #include <filesystem>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 namespace sort {
     //generator for the average case
-    SortableGenerator average_case_generator = [](size_t n, Value max_value) {
+    SortableGenerator average_case_generator = [](uint64_t n, Value max_value) {
         static std::random_device engine{};
         std::uniform_int_distribution<Value> distribution{MIN_VALUE, max_value};
 
-        std::unique_ptr<Sortable> sortable_ptr = std::make_unique<Sortable>(n);
-        for (size_t i = 0; i < n; ++i) {
-            (*sortable_ptr)[i] = distribution(engine);
+        Sortable sortable(n);
+        for (uint64_t i = 0; i < n; ++i) {
+            sortable[i] = distribution(engine);
         }
-        return sortable_ptr;
-    };
-
-    SortableGenerator same_number_generator = [](size_t n, Value) {
-        return std::make_unique<Sortable>(n, 42);
-    };
-
-    SortableGenerator sorted_number_generator = [](size_t n, Value) {
-        std::unique_ptr sortable = std::make_unique<Sortable>(n);
-        std::iota(sortable->begin(), sortable->end(), 0);
         return sortable;
     };
 
-    SortableGenerator reverse_sorted_number_generator = [](size_t n, Value) {
-        std::unique_ptr sortable = std::make_unique<Sortable>(n);
-        std::iota(sortable->rbegin(), sortable->rend(), 0);
+    SortableGenerator same_number_generator = [](uint64_t n, Value) {
+        return Sortable(n, 42);
+    };
+
+    SortableGenerator sorted_number_generator = [](uint64_t n, Value) {
+        Sortable sortable(n);
+        std::iota(sortable.begin(), sortable.end(), 0);
+        return sortable;
+    };
+
+    SortableGenerator reverse_sorted_number_generator = [](uint64_t n, Value) {
+        Sortable sortable(n);
+        std::iota(sortable.rbegin(), sortable.rend(), 0);
         return sortable;
     };
 
     inline std::ofstream
-    create_output_file(const std::filesystem::path &parent_dir, const std::string &file_name, size_t log_n_start,
-                       size_t log_n_end) {
+    create_output_file(const std::filesystem::path &parent_dir, const std::string &file_name, uint64_t log_n_start,
+                       uint64_t log_n_end) {
         create_directories(parent_dir);
         std::ofstream output_file{parent_dir / (file_name + ".csv"),
                                   std::ios::trunc}; //create an empty file for the results
@@ -48,7 +48,7 @@ namespace sort {
         }
 
         output_file << ";";
-        for (size_t log_n = log_n_start; log_n <= log_n_end; ++log_n) {
+        for (uint64_t log_n = log_n_start; log_n <= log_n_end; ++log_n) {
             output_file << log_n << ";";
         }
         output_file << '\n';
@@ -57,8 +57,8 @@ namespace sort {
     }
 
     inline void output_average_case(const std::vector<AlgorithmInformation> &algorithms,
-                                    size_t log_n_start,
-                                    size_t log_n_end,
+                                    uint64_t log_n_start,
+                                    uint64_t log_n_end,
                                     bool to_file, const std::filesystem::path &parent_dir) {
         std::ofstream average_case_results = create_output_file(parent_dir, "average_case_results",
                                                                 log_n_start, log_n_end);
@@ -74,8 +74,8 @@ namespace sort {
 
     inline void
     output(const std::vector<AlgorithmInformation> &algorithms,
-           size_t log_n_start,
-           size_t log_n_end,
+           uint64_t log_n_start,
+           uint64_t log_n_end,
            bool to_file, const std::filesystem::path &parent_dir) {
         if (to_file) {
             //write results to file
@@ -122,24 +122,24 @@ namespace sort {
                                      const MaxValueFunction &max_value_function,
                                      const Algorithm &algorithm,
                                      const std::string &algorithm_name,
-                                     const size_t log_n_start,
-                                     const size_t log_n_end,
-                                     const size_t iterations) {
+                                     const uint64_t log_n_start,
+                                     const uint64_t log_n_end,
+                                     const uint64_t iterations) {
         ExecutionResults results{};
 
-        for (size_t log_n = log_n_start; log_n <= log_n_end; ++log_n) {
+        for (uint64_t log_n = log_n_start; log_n <= log_n_end; ++log_n) {
             clock::duration total_duration{};
 
             Value n = 1ull << log_n;
             Value max_value = max_value_function(n);
-            for (size_t iteration = 0; iteration < iterations; ++iteration) {
+            for (uint64_t iteration = 0; iteration < iterations; ++iteration) {
                 auto sortable = generator(n, max_value);
                 auto start_point = clock::now();
-                algorithm(sortable->begin(), sortable->end());
+                algorithm(sortable.begin(), sortable.end());
                 auto end_point = clock::now();
                 total_duration += (end_point - start_point);
 
-                if (!std::is_sorted(sortable->begin(), sortable->end())) {
+                if (!std::is_sorted(sortable.begin(), sortable.end())) {
                     std::cerr << "Algorithm " << algorithm_name << " does not sort correctly at log_n=" << log_n
                               << '\n';
                     std::abort();
@@ -155,8 +155,8 @@ namespace sort {
 
     inline void benchmark(std::vector<AlgorithmInformation> &algorithms,
                           const MaxValueFunction &max_value_function,
-                          const size_t log_n_start,
-                          const size_t log_n_end,
+                          const uint64_t log_n_start,
+                          const uint64_t log_n_end,
                           bool to_file,
                           const std::filesystem::path &parent_dir = "./results") {
 

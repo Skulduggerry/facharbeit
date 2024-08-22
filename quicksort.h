@@ -3,7 +3,6 @@
 
 #include "definitions.h"
 #include "utils.h"
-#include <numeric>
 
 namespace sort {
     template<std::random_access_iterator It>
@@ -126,10 +125,10 @@ namespace sort {
     }
 
 
-    SortableGenerator quicksort_worst_case_generator = [](size_t n, Value) {
-        auto sortable_ptr = std::make_unique<Sortable>(n);
-        std::iota(sortable_ptr->begin(), sortable_ptr->end(), 0);
-        return sortable_ptr;
+    SortableGenerator quicksort_worst_case_generator = [](uint64_t n, Value) {
+        Sortable sortable(n);
+        std::iota(sortable.begin(), sortable.end(), 0);
+        return sortable;
     };
 
     template<std::random_access_iterator It>
@@ -141,11 +140,11 @@ namespace sort {
         std::iter_swap(middle, std::prev(end));
     }
 
-    SortableGenerator quicksort_best_case_generator = [](size_t n, Value) {
-        auto sortable_ptr = std::make_unique<Sortable>(n);
-        std::iota(sortable_ptr->begin(), sortable_ptr->end(), 0);
-        make_best_case(sortable_ptr->begin(), sortable_ptr->end());
-        return sortable_ptr;
+    SortableGenerator quicksort_best_case_generator = [](uint64_t n, Value) {
+        Sortable sortable(n);
+        std::iota(sortable.begin(), sortable.end(), 0);
+        make_best_case(sortable.begin(), sortable.end());
+        return sortable;
     };
 }
 

@@ -1,7 +1,6 @@
 #ifndef CODE_INSERTION_SORT_H
 #define CODE_INSERTION_SORT_H
 
-#include <numeric>
 #include "definitions.h"
 #include "utils.h"
 

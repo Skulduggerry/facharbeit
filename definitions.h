@@ -1,12 +1,10 @@
 #ifndef CODE_DEFINITIONS_H
 #define CODE_DEFINITIONS_H
 
-#include <cstdint>
-#include <vector>
-#include <chrono>
 #include <functional>
 #include <map>
-#include <memory>
+#include <cstdint>
+#include <chrono>
 
 #define DEFAULT_ITERATIONS_AVERAGE_CASE 10
 #define DEFAULT_ITERATIONS_SPECIAL_CASE 3
@@ -21,10 +19,10 @@ namespace sort {
     using Value = uint64_t;
     using Sortable = std::vector<Value>;
     using Algorithm = std::function<void(Sortable::iterator, Sortable::iterator)>;
-    using ExecutionResults = std::map<size_t, clock::duration>;
-    using MaxValueFunction = std::function<Value(size_t n)>; //function to generate the max value for a given size
-    using SortableGenerator = std::function<std::unique_ptr<Sortable>(size_t n, Value max_value)>; //max value is only required for average case
-    using CaseExecutionInformation = std::pair<size_t, SortableGenerator>; //store the iterations and the generator
+    using ExecutionResults = std::map<uint64_t, clock::duration>;
+    using MaxValueFunction = std::function<Value(uint64_t n)>; //function to generate the max value for a given size
+    using SortableGenerator = std::function<Sortable(uint64_t n, Value max_value)>; //max value is only required for average case
+    using CaseExecutionInformation = std::pair<uint64_t, SortableGenerator>; //store the iterations and the generator
     const std::string BEST_CASE = "BEST_CASE";
     const std::string AVERAGE_CASE = "AVERAGE_CASE";
     const std::string WORST_CASE = "WORST_CASE";
@@ -45,12 +43,12 @@ namespace sort {
     };
 
     //generator function to generate many equal values
-    Value MAX_VALUE_MANY_EQUAL(size_t n, long double percentage_equal) {
+    Value MAX_VALUE_MANY_EQUAL(uint64_t n, long double percentage_equal) {
         return Value(1 / (percentage_equal / double(100)));
     }
 
     //generator function to make most of the values different
-    Value MAX_VALUE_MANY_DIFFERENT(size_t) {
+    Value MAX_VALUE_MANY_DIFFERENT(uint64_t) {
         return Value(-1);
     }
 }
